@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Supermarket.Entites\Supermarket.Entites.csproj" />
+    <ProjectReference Include="..\Supermarket.Identity\Supermarket.Identity.csproj" />
     <ProjectReference Include="..\Supermarket.Persistent\Supermarket.Persistent.csproj" />
   </ItemGroup>
 
