@@ -1,15 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Supermarket.Domain.Services;
-using Supermarket.Domain.Services.Contracts;
-using Supermarket.Persistent.Context;
-using Supermarket.Persistent.Contracts;
-using Supermarket.Persistent.Repositories;
+using Newtonsoft.Json.Serialization;
+using Supermarket.Extensions;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Supermarket
 {
@@ -25,17 +22,25 @@ namespace Supermarket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.ConfigureCors();
 
-            services.AddDbContext<RepositoryContext>(options =>
+            services.ConfigureIISIntegration();
+
+            services.ConfigureMSSQLContext(Configuration);
+
+            services.ConfigureRepositoryWrapper();
+
+            services.ConfigureServicesWrapper();
+
+            services.AddMvc().AddJsonOptions(options =>
             {
-                options.UseInMemoryDatabase("supermarket-api-in-memory");
-            });
+                //Force Camel Case to JSON
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddScoped<IServiceWrapper, ServiceWrapper>();
+            services.ConfigureAutoMapper();
 
-            services.AddAutoMapper();
+            services.ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +57,27 @@ namespace Supermarket
             }
 
             app.UseHttpsRedirection();
+
+            //CORS configuration has beend added to the application pipeline
+            app.UseCors("CorsPolicy");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
+
+            app.UseStaticFiles();
             app.UseMvc();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Supermarket API V1");
+            });
         }
     }
 }
