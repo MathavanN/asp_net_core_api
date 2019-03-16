@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Supermarket.Extensions;
-using Swashbuckle.AspNetCore.Swagger;
+using Supermarket.Resources;
 
 namespace Supermarket
 {
@@ -22,11 +22,21 @@ namespace Supermarket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //inject AppSettings
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+
             services.ConfigureCors();
 
             services.ConfigureIISIntegration();
 
             services.ConfigureMSSQLContext(Configuration);
+
+            services.ConfigureIdentity();
+
+            services.ConfigurePasswordPolicy();
+
+            services.ConfigureAuthentication(Configuration);
 
             services.ConfigureRepositoryWrapper();
 
@@ -55,6 +65,7 @@ namespace Supermarket
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 

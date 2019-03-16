@@ -1,6 +1,8 @@
 .vs/**
 Supermarket.Entites/bin/**
 Supermarket.Entites/obj/**
+Supermarket.Identity/bin/**
+Supermarket.Identity/obj/**
 Supermarket.Persistent/bin/**
 Supermarket.Persistent/obj/**
 Supermarket/bin/**
