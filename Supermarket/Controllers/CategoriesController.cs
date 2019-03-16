@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Supermarket.Domain.Services.Contracts;
 using Supermarket.Entites.Models;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace Supermarket.Controllers
 {
     [Route("/api/[controller]")]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly IServiceWrapper _serviceWrapper;
