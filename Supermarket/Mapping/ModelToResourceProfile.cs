@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Supermarket.Entites.Models;
 using Supermarket.Extensions;
+using Supermarket.Identity.Models;
 using Supermarket.Resources;
 
 namespace Supermarket.Mapping
@@ -9,6 +10,8 @@ namespace Supermarket.Mapping
     {
         public ModelToResourceProfile()
         {
+            CreateMap<ApplicationUser, UserProfileResource>();
+
             CreateMap<Category, CategoryResource>();
 
             CreateMap<Product, ProductResource>()
