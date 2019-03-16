@@ -10,6 +10,7 @@ Next ToDo List:
 - Role Based Authentication/Authorization
 - Logging
 - Global Error Handling
+- Dockerization
 
 ### Note
 - Trying to understand best practices. May be frequently modified the project structure.
