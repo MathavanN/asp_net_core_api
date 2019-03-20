@@ -7,10 +7,12 @@ using Supermarket.Resources;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Supermarket.Controllers
+namespace Supermarket.V1.Controllers
 {
-    [Route("/api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize]
+    [ApiController]
     public class ProductsController : ControllerBase
     {
         private readonly IServiceWrapper _serviceWrapper;

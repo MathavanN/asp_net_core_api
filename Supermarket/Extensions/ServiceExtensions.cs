@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +16,11 @@ using Supermarket.Identity.Models;
 using Supermarket.Persistent.Context;
 using Supermarket.Persistent.Contracts;
 using Supermarket.Persistent.Repositories;
+using Supermarket.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Supermarket.Extensions
@@ -66,28 +72,34 @@ namespace Supermarket.Extensions
             services.AddAutoMapper();
         }
 
-        public static void ConfigureSwagger(this IServiceCollection services)
+        public static void ConfigureSwagger(this IServiceCollection services, Type type)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new Info
+                // Resolve the temprary IApiVersionDescriptionProvider service  
+                var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+                // Add a swagger document for each discovered API version  
+                foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    Title = "Supermarket API",
-                    Version = "v1",
-                    Description = "A simple example ASP.NET Core Web API",
-                    TermsOfService = "None",
-                    Contact = new Contact
-                    {
-                        Name = "Mathavan N",
-                        Email = "mathavan@gmail.com",
-                        Url = "https://github.com/Mathavana"
-                    },
-                    License = new License
-                    {
-                        Name = "Use under LICX",
-                        Url = "https://example.com/license"
-                    }
+                    options.SwaggerDoc(description.GroupName, SwaggerInfo.CreateInfoForApiVersion(description, type));
+                }
+
+                // Define the BearerAuth scheme that's in use
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
                 });
+                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Bearer", Enumerable.Empty<string>() },
+                });
+
+                // Add a custom filter for setting the default values  
+                options.OperationFilter<SwaggerDefaultValues>();
             });
         }
 
@@ -111,16 +123,16 @@ namespace Supermarket.Extensions
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var key = Encoding.UTF8.GetBytes(configuration["ApplicationSettings:JWT_Secret"].ToString());
-            services.AddAuthentication(x =>
+            services.AddAuthentication(options =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = false;
-                x.TokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = false; //only for DEV ENV
+                options.SaveToken = false;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
@@ -128,6 +140,29 @@ namespace Supermarket.Extensions
                     ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
                 };
+            });
+        }
+
+        public static void ConfigureApiVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                //options.ApiVersionReader = new MediaTypeApiVersionReader();
+                options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+            });
+        }
+
+        public static void ConfigureVersionedApiExplorer(this IServiceCollection services)
+        {
+            services.AddVersionedApiExplorer(options =>
+            {
+                //The format of the version added to the route URL
+                options.GroupNameFormat = "'v'VVV";
+                //Tells swagger to replace the version in the controller route
+                options.SubstituteApiVersionInUrl = true;
             });
         }
     }

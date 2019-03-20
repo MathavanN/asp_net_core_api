@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Supermarket.Entites.Models;
 using Supermarket.Extensions;
 using Supermarket.Identity.Models;
 using Supermarket.Resources;
@@ -16,10 +14,11 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Supermarket.Controllers
+namespace Supermarket.V1.Controller
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -27,7 +26,7 @@ namespace Supermarket.Controllers
         private readonly ApplicationSettings _appSettings;
         private readonly IMapper _mapper;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, 
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             IOptions<ApplicationSettings> appSettings, IMapper mapper)
         {
             _userManager = userManager;
