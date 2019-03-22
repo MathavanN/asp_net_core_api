@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Supermarket.Extensions;
-using Supermarket.Identity.Models;
+using Supermarket.Core.Models;
 using Supermarket.Resources;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -37,11 +37,10 @@ namespace Supermarket.V1.Controller
 
         [HttpPost]
         [Route("Register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody]RegisterResource resource)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessage());
-
             var user = new ApplicationUser()
             {
                 UserName = resource.Email,
@@ -56,11 +55,10 @@ namespace Supermarket.V1.Controller
 
         [HttpPost]
         [Route("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody]LoginResource resource)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessage());
-
             var user = await _userManager.FindByNameAsync(resource.Email);
 
             if (user != null && await _userManager.CheckPasswordAsync(user, resource.Password))
@@ -91,6 +89,7 @@ namespace Supermarket.V1.Controller
         [HttpGet]
         [Authorize]
         [Route("Profile")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUserInfo()
         {
             var userId = User.Claims.First(c => c.Type == "UserId").Value;

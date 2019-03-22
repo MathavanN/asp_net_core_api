@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Supermarket.Core.Models;
 using Supermarket.Domain.Services.Contracts;
-using Supermarket.Entites.Models;
 using Supermarket.Resources;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace Supermarket.V1.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             var products = await _serviceWrapper.Product.ListAsync();
