@@ -1,4 +1,4 @@
-﻿using Supermarket.Entites.Models;
+﻿using Supermarket.Core.Models;
 
 namespace Supermarket.Domain.Communication
 {
