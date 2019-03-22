@@ -1,9 +1,5 @@
-﻿using Supermarket.Domain.Services.Contracts;
-using Supermarket.Persistent.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Supermarket.Core.Repositories.Contracts;
+using Supermarket.Domain.Services.Contracts;
 
 namespace Supermarket.Domain.Services
 {

@@ -1,6 +1,6 @@
-﻿using Supermarket.Domain.Services.Contracts;
-using Supermarket.Entites.Models;
-using Supermarket.Persistent.Contracts;
+﻿using Supermarket.Core.Models;
+using Supermarket.Core.Repositories.Contracts;
+using Supermarket.Domain.Services.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
