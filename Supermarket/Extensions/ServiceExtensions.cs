@@ -9,13 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Supermarket.Core.Context;
+using Supermarket.Core.Models;
+using Supermarket.Core.Repositories;
+using Supermarket.Core.Repositories.Contracts;
 using Supermarket.Domain.Services;
 using Supermarket.Domain.Services.Contracts;
-using Supermarket.Identity.Context;
-using Supermarket.Identity.Models;
-using Supermarket.Persistent.Context;
-using Supermarket.Persistent.Contracts;
-using Supermarket.Persistent.Repositories;
 using Supermarket.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -48,7 +47,7 @@ namespace Supermarket.Extensions
         {
             services.AddDbContext<AuthenticationContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("IdentityConnectionString"));
+                options.UseSqlServer(configuration.GetConnectionString("SupermarketConnectionString"));
             });
 
             services.AddDbContext<RepositoryContext>(options =>
