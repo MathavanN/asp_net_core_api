@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Supermarket.Entites.Models;
+using Supermarket.Core.Models;
 using Supermarket.Resources;
 
 namespace Supermarket.Mapping
