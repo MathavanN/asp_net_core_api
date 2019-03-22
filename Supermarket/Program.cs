@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Supermarket.Persistent.Context;
+using Supermarket.Core.Context;
 
 namespace Supermarket
 {
