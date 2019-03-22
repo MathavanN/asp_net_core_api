@@ -7,6 +7,10 @@ We will try to create an API application using asp.net core.
 - Swagger for API Document
 - API Version
 - Logging (Serilog)
+- API Analyzer added - For proper swagger documentation
+- Model.IsValid is removed in each controller. (ApiController auto implement Model.IsValid)
+- Models, Enums, Context, Repositories moved to Supermarket.Core project
+- xUnit Test Project added
 
 ### Next ToDo List:
 - Role Based Authentication/Authorization

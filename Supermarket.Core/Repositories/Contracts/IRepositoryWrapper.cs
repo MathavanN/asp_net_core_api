@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Supermarket.Persistent.Contracts
+﻿namespace Supermarket.Core.Repositories.Contracts
 {
     public interface IRepositoryWrapper
     {

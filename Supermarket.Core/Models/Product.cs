@@ -1,6 +1,7 @@
-﻿using Supermarket.Entites.Enums;
+﻿using Supermarket.Core.Enums;
+using System;
 
-namespace Supermarket.Entites.Models
+namespace Supermarket.Core.Models
 {
     public class Product : IEntity
     {
@@ -11,5 +12,7 @@ namespace Supermarket.Entites.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime DateModified { get; set; }
     }
 }

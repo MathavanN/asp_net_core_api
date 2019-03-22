@@ -1,10 +1,10 @@
-﻿using Supermarket.Persistent.Context;
-using Supermarket.Persistent.Contracts;
+﻿using Supermarket.Core.Context;
+using Supermarket.Core.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Supermarket.Persistent.Repositories
+namespace Supermarket.Core.Repositories
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
@@ -21,7 +21,7 @@ namespace Supermarket.Persistent.Repositories
         {
             get
             {
-                if(_categoryRepository == null)
+                if (_categoryRepository == null)
                 {
                     _categoryRepository = new CategoryRepository(_repositoryContext);
                 }
@@ -34,7 +34,7 @@ namespace Supermarket.Persistent.Repositories
         {
             get
             {
-                if(_productRepository == null)
+                if (_productRepository == null)
                 {
                     _productRepository = new ProductRepository(_repositoryContext);
                 }

@@ -11,8 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LogFiles\**" />
+    <Content Remove="LogFiles\**" />
+    <EmbeddedResource Remove="LogFiles\**" />
+    <None Remove="LogFiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ApiExplorer" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.0" />
@@ -25,9 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Supermarket.Entites\Supermarket.Entites.csproj" />
-    <ProjectReference Include="..\Supermarket.Identity\Supermarket.Identity.csproj" />
-    <ProjectReference Include="..\Supermarket.Persistent\Supermarket.Persistent.csproj" />
+    <ProjectReference Include="..\Supermarket.Core\Supermarket.Core.csproj" />
   </ItemGroup>
 
 </Project>

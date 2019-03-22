@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Supermarket.Identity.Models;
+using Supermarket.Core.Models;
 
-namespace Supermarket.Identity.Context
+namespace Supermarket.Core.Context
 {
     public class AuthenticationContext : IdentityDbContext
     {

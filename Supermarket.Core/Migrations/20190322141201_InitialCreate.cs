@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Supermarket.Identity.Migrations
+namespace Supermarket.Core.Migrations
 {
     public partial class InitialCreate : Migration
     {

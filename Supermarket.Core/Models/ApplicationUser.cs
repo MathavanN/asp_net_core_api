@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Supermarket.Identity.Models
+namespace Supermarket.Core.Models
 {
     public class ApplicationUser : IdentityUser
     {

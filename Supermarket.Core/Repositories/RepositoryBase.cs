@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Supermarket.Persistent.Context;
-using Supermarket.Persistent.Contracts;
+using Supermarket.Core.Context;
+using Supermarket.Core.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Supermarket.Persistent.Repositories
+namespace Supermarket.Core.Repositories
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {

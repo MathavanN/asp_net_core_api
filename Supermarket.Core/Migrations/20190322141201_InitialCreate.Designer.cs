@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Supermarket.Identity.Context;
+using Supermarket.Core.Context;
 
-namespace Supermarket.Identity.Migrations
+namespace Supermarket.Core.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190316080724_InitialCreate")]
+    [Migration("20190322141201_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,7 +191,7 @@ namespace Supermarket.Identity.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Supermarket.Identity.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Supermarket.Core.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 

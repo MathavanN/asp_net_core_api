@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Supermarket.Entites.Models;
+using Supermarket.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Supermarket.Persistent.Context
+namespace Supermarket.Core.Context
 {
     public class RepositoryContext : DbContext
     {

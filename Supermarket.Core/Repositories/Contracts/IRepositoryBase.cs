@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Supermarket.Persistent.Contracts
+namespace Supermarket.Core.Repositories.Contracts
 {
     public interface IRepositoryBase<TEntity> where TEntity : class
     {

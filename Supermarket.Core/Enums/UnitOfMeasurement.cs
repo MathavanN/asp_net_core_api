@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Supermarket.Entites.Enums
+namespace Supermarket.Core.Enums
 {
     public enum UnitOfMeasurement
     {

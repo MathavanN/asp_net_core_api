@@ -1,10 +1,8 @@
-﻿using Supermarket.Entites.Models;
-using System;
+﻿using Supermarket.Core.Models;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Supermarket.Persistent.Contracts
+namespace Supermarket.Core.Repositories.Contracts
 {
     public interface IProductRepository
     {

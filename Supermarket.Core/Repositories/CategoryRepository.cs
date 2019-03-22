@@ -1,14 +1,13 @@
-﻿using Supermarket.Entites.Models;
-using Supermarket.Persistent.Context;
-using Supermarket.Persistent.Contracts;
+﻿using Supermarket.Core.Context;
+using Supermarket.Core.Models;
+using Supermarket.Core.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Supermarket.Persistent.Repositories
+namespace Supermarket.Core.Repositories
 {
     public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
     {
