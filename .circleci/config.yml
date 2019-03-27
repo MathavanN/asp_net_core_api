@@ -1,14 +1,10 @@
 workflows:
-  version: 2.1
-  main:
+  version: 2
+  build_and_test:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: 
-              - develop
-              - master
-version: 2.1
+      - build
+      - test
+version: 2
 jobs:
   build:
     docker:
@@ -16,20 +12,22 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Find
-          command: find .
-      - run:
           name: Restore
           command: dotnet restore ./Supermarket.Core/Supermarket.Core.csproj
-      - run:
-          name: Build
-          command: dotnet build ./Supermarket.Core/Supermarket.Core.csproj
       - run:
           name: Restore
           command: dotnet restore ./Supermarket/Supermarket.csproj
       - run:
           name: Build
+          command: dotnet build ./Supermarket.Core/Supermarket.Core.csproj
+      - run:
+          name: Build
           command: dotnet build ./Supermarket/Supermarket.csproj
+  test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    steps:
+      - checkout
       - run:
           name: Test
           command: dotnet test ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
