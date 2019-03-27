@@ -17,6 +17,7 @@ We will try to create an API application using asp.net core.
 - Standard response for both error/success results
 - Global Error Handling
 - Dockerization
+- CircleCi
 
 ### Note
 - Trying to understand best practices. May be frequently modified the project structure.
