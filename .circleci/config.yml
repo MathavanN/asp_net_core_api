@@ -1,12 +1,14 @@
 workflows:
-  version: 2
+  version: 2.1
   main:
     jobs:
       - build:
           filters:
             branches:
-              only: develop
-version: 2
+              only: 
+              - develop
+              - master
+version: 2.1
 jobs:
   build:
     docker:
