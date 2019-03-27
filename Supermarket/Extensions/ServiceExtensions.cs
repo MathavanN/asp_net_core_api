@@ -75,7 +75,7 @@ namespace Supermarket.Extensions
         {
             services.AddSwaggerGen(options =>
             {
-                // Resolve the temprary IApiVersionDescriptionProvider service  
+                // Resolve the temporary IApiVersionDescriptionProvider service  
                 var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
 
                 // Add a swagger document for each discovered API version  
