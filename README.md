@@ -1,5 +1,10 @@
 # ASP.NET Core Web API development
 
+| Branch | CircleCi |
+| ------ | ------ |
+| master | ![CircleCI branch](https://img.shields.io/circleci/project/github/Mathavana/asp_net_core_api/master.svg?style=popout) |
+| develop | ![CircleCI branch](https://img.shields.io/circleci/project/github/Mathavana/asp_net_core_api/develop.svg?style=popout) |
+
 We will try to create an API application using asp.net core.
 - Mainly using repository pattern, generics, LINQ, Entity framework core
 - Main business logic implemented in InMemeory Database (plan to use MSSQL DB)
