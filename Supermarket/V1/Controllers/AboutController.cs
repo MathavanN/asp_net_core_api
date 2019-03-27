@@ -21,6 +21,7 @@ namespace Supermarket.V1.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
+            varr x = 1;
             _logger.LogInformation("Still consuming deprecated api method");
 
             return Ok(new { message = "This is about Api Version 1.0" });
