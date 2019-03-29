@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Supermarket.Core.Models;
 using Supermarket.Extensions;
-using Supermarket.Resources;
+using Supermarket.V1.Dtos.AccountDtos;
+using Supermarket.V1.Dtos.CategoryDtos;
+using Supermarket.V1.Dtos.ProductDtos;
 
 namespace Supermarket.Mapping
 {
@@ -9,11 +11,11 @@ namespace Supermarket.Mapping
     {
         public ModelToResourceProfile()
         {
-            CreateMap<ApplicationUser, UserProfileResource>();
+            CreateMap<ApplicationUser, UserInfoDto>();
 
-            CreateMap<Category, CategoryResource>();
+            CreateMap<Category, CategoryDto>();
 
-            CreateMap<Product, ProductResource>()
+            CreateMap<Product, ProductDto>()
                 .ForMember(src => src.UnitOfMeasurement,
                             opt => opt.MapFrom(src => src.UnitOfMeasurement.ToDescriptionString()));
         }
