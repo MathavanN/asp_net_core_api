@@ -16,13 +16,17 @@ We will try to create an API application using asp.net core.
 - Model.IsValid is removed in each controller. (ApiController auto implement Model.IsValid)
 - Models, Enums, Context, Repositories moved to Supermarket.Core project
 - xUnit Test Project added
+- CircleCi
+- Standard response for error (400,404) results (Similar to ApiController model validation result)
 
 ### Next ToDo List:
 - Role Based Authentication/Authorization
-- Standard response for both error/success results
 - Global Error Handling
 - Dockerization
-- CircleCi
+- More test cases needed
+- Proper model implementation
+- model to DB
+
 
 ### Note
 - Trying to understand best practices. May be frequently modified the project structure.
