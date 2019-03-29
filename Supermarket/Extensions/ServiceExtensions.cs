@@ -13,8 +13,6 @@ using Supermarket.Core.Context;
 using Supermarket.Core.Models;
 using Supermarket.Core.Repositories;
 using Supermarket.Core.Repositories.Contracts;
-using Supermarket.Domain.Services;
-using Supermarket.Domain.Services.Contracts;
 using Supermarket.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -59,11 +57,6 @@ namespace Supermarket.Extensions
         public static void ConfigureRepositoryWrapper(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-        }
-
-        public static void ConfigureServicesWrapper(this IServiceCollection services)
-        {
-            services.AddScoped<IServiceWrapper, ServiceWrapper>();
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
