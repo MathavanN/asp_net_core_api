@@ -2,8 +2,8 @@
 
 | Branch | CircleCi |
 | ------ | ------ |
-| master | ![CircleCI branch](https://img.shields.io/circleci/project/github/Mathavana/asp_net_core_api/master.svg?style=popout) |
-| develop | ![CircleCI branch](https://img.shields.io/circleci/project/github/Mathavana/asp_net_core_api/develop.svg?style=popout) |
+| master | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master) |
+| develop | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop) |
 
 We will try to create an API application using asp.net core.
 - Mainly using repository pattern, generics, LINQ, Entity framework core
