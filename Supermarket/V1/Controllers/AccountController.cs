@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Supermarket.ApiResponse;
 using Supermarket.Core.Models;
 using Supermarket.Resources;
+using Supermarket.V1.Dtos.AccountDtos;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -39,16 +41,16 @@ namespace Supermarket.V1.Controller
         [Route("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody]RegisterResource resource)
+        public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
             var user = new ApplicationUser()
             {
-                UserName = resource.Email,
-                Email = resource.Email,
-                FullName = resource.FullName
+                UserName = registerDto.Email,
+                Email = registerDto.Email,
+                FullName = registerDto.FullName
             };
 
-            var result = await _userManager.CreateAsync(user, resource.Password);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             return Ok(result);
         }
@@ -57,33 +59,36 @@ namespace Supermarket.V1.Controller
         [Route("Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login([FromBody]LoginResource resource)
+        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Login([FromBody]LoginDto loginDto)
         {
-            var user = await _userManager.FindByNameAsync(resource.Email);
+            var userDb = await _userManager.FindByNameAsync(loginDto.Email);
 
-            if (user != null && await _userManager.CheckPasswordAsync(user, resource.Password))
+            if (userDb == null)
+                return NotFound(new NotFoundResponse("User not found"));
+
+            var result = await _userManager.CheckPasswordAsync(userDb, loginDto.Password);
+
+            if(!result)
+                return BadRequest(new BadRequestResponse("Username or password is incorrect"));
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserId", user.Id.ToString())
+                        new Claim("UserId", userDb.Id.ToString())
                     }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
                         SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(securityToken);
 
-                return Ok(new { token });
-            }
-            else
-            {
-                return BadRequest(new { message = "Username or password is incorrect" });
-            }
+            return Ok(new { token });
         }
 
         [HttpGet]
@@ -95,9 +100,9 @@ namespace Supermarket.V1.Controller
             var userId = User.Claims.First(c => c.Type == "UserId").Value;
             var user = await _userManager.FindByIdAsync(userId);
 
-            var userProfileResource = _mapper.Map<ApplicationUser, UserProfileResource>(user);
+            var userInfoDto = _mapper.Map<ApplicationUser, UserInfoDto>(user);
 
-            return Ok(userProfileResource);
+            return Ok(userInfoDto);
         }
     }
 }

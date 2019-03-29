@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Supermarket.ApiResponse;
 using Supermarket.Core.Models;
-using Supermarket.Domain.Services.Contracts;
-using Supermarket.Resources;
+using Supermarket.Core.Repositories.Contracts;
+using Supermarket.V1.Dtos.CategoryDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,12 +17,12 @@ namespace Supermarket.V1.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly IServiceWrapper _serviceWrapper;
+        private readonly IRepositoryWrapper _repositoryWrapper;
         private readonly IMapper _mapper;
 
-        public CategoriesController(IServiceWrapper serviceWrapper, IMapper mapper)
+        public CategoriesController(IRepositoryWrapper repositoryWrapper, IMapper mapper)
         {
-            _serviceWrapper = serviceWrapper;
+            _repositoryWrapper = repositoryWrapper;
             _mapper = mapper;
         }
 
@@ -29,55 +30,72 @@ namespace Supermarket.V1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync()
         {
-            var categories = await _serviceWrapper.Category.ListAsync();
+            var categories = await _repositoryWrapper.Category.ListAllCategoriesAsync();
 
-            var resources = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(categories);
+            var categoryDtos = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDto>>(categories);
 
-            return Ok(resources);
+            return Ok(categoryDtos);
+        }
+
+        [HttpGet("{id}", Name = "CategoryById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> GetCategoryById(int id)
+        {
+            var dbCategory = await _repositoryWrapper.Category.FindById(id);
+            if (dbCategory == null)
+                return NotFound(new NotFoundResponse("Category not found"));
+
+            var categoryDto = _mapper.Map<Category, CategoryDto>(dbCategory);
+            return Ok(categoryDto);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAsync([FromBody] SaveCategoryResource resource)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> PostAsync([FromBody] CreateCategoryDto createCategoryDto)
         {
-            var category = _mapper.Map<SaveCategoryResource, Category>(resource);
-            var result = await _serviceWrapper.Category.SaveAsync(category);
+            var category = _mapper.Map<CreateCategoryDto, Category>(createCategoryDto);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            await _repositoryWrapper.Category.AddCategoryAsync(category);
 
-            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
-            return Ok(categoryResource);
+            var categoryDto = _mapper.Map<Category, CategoryDto>(category);
+
+            return CreatedAtRoute("CategoryById", new { id = categoryDto.Id }, categoryDto);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCategoryResource resource)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCategoryDto saveCategoryDto)
         {
-            var category = _mapper.Map<SaveCategoryResource, Category>(resource);
-            var result = await _serviceWrapper.Category.UpdateAsync(id, category);
+            var dbCategory = await _repositoryWrapper.Category.FindById(id);
+            if (dbCategory == null)
+                return NotFound(new NotFoundResponse("Category not found"));
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            dbCategory.Name = saveCategoryDto.Name;
+            dbCategory.DateModified = saveCategoryDto.DateModified;
 
-            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
-            return Ok(categoryResource);
+            await _repositoryWrapper.Category.UpdateCategoryAsync(dbCategory);
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var result = await _serviceWrapper.Category.DeleteAsync(id);
+            var dbCategory = await _repositoryWrapper.Category.FindById(id);
+            if (dbCategory == null)
+                return NotFound(new NotFoundResponse("Category not found"));
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            await _repositoryWrapper.Category.DeleteCategoryAsync(dbCategory);
 
-            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
-            return Ok(categoryResource);
+            return NoContent();
         }
     }
 }

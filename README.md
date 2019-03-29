@@ -2,8 +2,8 @@
 
 | Branch | CircleCi |
 | ------ | ------ |
-| master | ![CircleCI branch](https://img.shields.io/circleci/project/github/Mathavana/asp_net_core_api/master.svg?style=popout) |
-| develop | ![CircleCI branch](https://img.shields.io/circleci/project/github/Mathavana/asp_net_core_api/develop.svg?style=popout) |
+| master | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master) |
+| develop | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop) |
 
 We will try to create an API application using asp.net core.
 - Mainly using repository pattern, generics, LINQ, Entity framework core
@@ -16,13 +16,17 @@ We will try to create an API application using asp.net core.
 - Model.IsValid is removed in each controller. (ApiController auto implement Model.IsValid)
 - Models, Enums, Context, Repositories moved to Supermarket.Core project
 - xUnit Test Project added
+- CircleCi
+- Standard response for error (400,404) results (Similar to ApiController model validation result)
 
 ### Next ToDo List:
 - Role Based Authentication/Authorization
-- Standard response for both error/success results
 - Global Error Handling
 - Dockerization
-- CircleCi
+- More test cases needed
+- Proper model implementation
+- model to DB
+
 
 ### Note
 - Trying to understand best practices. May be frequently modified the project structure.

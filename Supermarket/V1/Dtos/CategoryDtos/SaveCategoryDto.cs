@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Supermarket.Resources
+namespace Supermarket.V1.Dtos.CategoryDtos
 {
-    public class SaveCategoryResource
+    public class SaveCategoryDto
     {
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
+
+        public DateTime DateModified { get; private set; } = DateTime.Now;
     }
 }

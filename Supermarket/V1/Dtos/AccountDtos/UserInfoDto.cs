@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Supermarket.Resources
+namespace Supermarket.V1.Dtos.AccountDtos
 {
-    public class LoginResource
+    public class UserInfoDto
     {
+        public string FullName { get; set; }
+
         public string Email { get; set; }
-        public string Password { get; set; }
     }
 }
