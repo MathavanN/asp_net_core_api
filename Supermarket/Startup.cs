@@ -45,8 +45,6 @@ namespace Supermarket
 
             services.ConfigureRepositoryWrapper();
 
-            services.ConfigureServicesWrapper();
-
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
