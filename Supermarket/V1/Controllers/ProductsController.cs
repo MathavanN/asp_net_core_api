@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Supermarket.Core.Models;
 using Supermarket.Core.Repositories.Contracts;
-using Supermarket.Resources;
 using Supermarket.V1.Dtos.ProductDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
