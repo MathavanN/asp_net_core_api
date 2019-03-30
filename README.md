@@ -17,11 +17,11 @@ We will try to create an API application using asp.net core.
 - Models, Enums, Context, Repositories moved to Supermarket.Core project
 - xUnit Test Project added
 - CircleCi
-- Standard response for error (400,404) results (Similar to ApiController model validation result)
+- Standard response for error (400,404, 500) results (Similar to ApiController model validation result)
+- Global Error Handling
 
 ### Next ToDo List:
 - Role Based Authentication/Authorization
-- Global Error Handling
 - Dockerization
 - More test cases needed
 - Proper model implementation
