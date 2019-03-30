@@ -13,6 +13,7 @@ using Supermarket.Core.Context;
 using Supermarket.Core.Models;
 using Supermarket.Core.Repositories;
 using Supermarket.Core.Repositories.Contracts;
+using Supermarket.Middleware;
 using Supermarket.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -156,6 +157,11 @@ namespace Supermarket.Extensions
                 //Tells swagger to replace the version in the controller route
                 options.SubstituteApiVersionInUrl = true;
             });
+        }
+
+        public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ExceptionMiddleware>();
         }
     }
 }
