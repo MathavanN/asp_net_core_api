@@ -45,8 +45,9 @@ namespace Supermarket
 
             services.ConfigureRepositoryWrapper();
 
-            services.AddMvc().AddJsonOptions(options =>
+            services.AddMvcCore().AddJsonOptions(options =>
             {
+                options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -64,9 +65,13 @@ namespace Supermarket
             IApiVersionDescriptionProvider provider, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddSerilog();
+
+            app.ConfigureCustomExceptionMiddleware();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
