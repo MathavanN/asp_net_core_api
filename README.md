@@ -37,6 +37,8 @@ We will try to create an API application using asp.net core.
 - See [code-maze](https://code-maze.com)
 - See [CodAffection](https://www.youtube.com/channel/UCvzlnZbePin9kH-1JCKBt8Q)
 
+[![](https://codescene.io/projects/4502/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/4502/jobs/latest-successful/results)
+
 License
 ----
 
