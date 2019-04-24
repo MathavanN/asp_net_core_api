@@ -11,6 +11,7 @@ namespace Supermarket.Core.Repositories
         private readonly RepositoryContext _repositoryContext;
         private ICategoryRepository _categoryRepository;
         private IProductRepository _productRepository;
+        private ICountryRepository _countryRepository;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
@@ -40,6 +41,19 @@ namespace Supermarket.Core.Repositories
                 }
 
                 return _productRepository;
+            }
+        }
+
+        public ICountryRepository Country
+        {
+            get
+            {
+                if (_countryRepository == null)
+                {
+                    _countryRepository = new CountryRepository(_repositoryContext);
+                }
+
+                return _countryRepository;
             }
         }
     }
