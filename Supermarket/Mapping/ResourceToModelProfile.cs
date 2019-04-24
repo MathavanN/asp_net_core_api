@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Supermarket.Core.Models;
-using Supermarket.Resources;
 using Supermarket.V1.Dtos.CategoryDtos;
+using Supermarket.V1.Dtos.CountryDtos;
 
 namespace Supermarket.Mapping
 {
@@ -10,6 +10,8 @@ namespace Supermarket.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<CreateCategoryDto, Category>();
+
+            CreateMap<CreateCountryDto, Country>();
         }
     }
 }
