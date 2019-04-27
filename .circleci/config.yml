@@ -30,10 +30,4 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
-      - run:
-          name: GenerateReport
-          command: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2 && export PATH="$PATH:/root/.dotnet/tools" && cd ./Supermarket.UnitTests && dotnet reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML
-      - run:
-          name: SendToCodecov
-          command: codecov -f ".\Supermarket.UnitTests\CoverageReports\Coverage\coverage.cobertura.xml"  -t $CODECOV_TOKEN
+          command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*" && dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2 && export PATH="$PATH:/root/.dotnet/tools" && cd ./Supermarket.UnitTests && dotnet reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML && codecov -f ".\Supermarket.UnitTests\CoverageReports\Coverage\coverage.cobertura.xml"  -t $CODECOV_TOKEN
