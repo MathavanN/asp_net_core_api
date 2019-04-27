@@ -30,7 +30,10 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: dotnet test ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
+          command: dotnet test --logger "trx;LogFileName=TestResults.trx /p:DebugType=full ./Supermarket.UnitTests/Supermarket.UnitTests.csproj" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*
       - run:
-          name: Send to Codecov
-          command: "bash <(curl -s https://codecov.com/bash) -t b3ba951f-1d14-48ee-87d1-0dfc197a9adf"
+          name: GenerateReport
+          command: dotnet reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML;HTMLSummary
+      - run:
+          name: GenerateReport
+          command: codecov -f ".\Supermarket.UnitTests\CoverageReports\Coverage\coverage.cobertura.xml"  -t $CODECOV_TOKEN
