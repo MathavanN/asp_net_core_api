@@ -24,3 +24,7 @@ bld/
 
 # Log Files
 LogFiles/
+
+#Code Coverage Files
+Coverage/
+UnitTests/
