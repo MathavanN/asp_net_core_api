@@ -33,4 +33,7 @@ jobs:
           command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
       - run:
           name: SendToCodecov
-          command: codecov -f "./Supermarket.UnitTests/CoverageReports/Coverage/coverage.cobertura.xml"  -t $CODECOV_TOKEN
+          command: |
+            curl -s https://codecov.io/bash > codecov |
+            chmod +x codecov |
+            ./codecov -f "./Supermarket.UnitTests/CoverageReports/Coverage/coverage.cobertura.xml" -t $CODECOV_TOKEN
