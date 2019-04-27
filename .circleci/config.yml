@@ -29,8 +29,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Test
-          command: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2
+          name: Restore
+          command: dotnet restore ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
+      - run:
+          name: Build
+          command: dotnet build ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
       - run:
           name: Test
           command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
