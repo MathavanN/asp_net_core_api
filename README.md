@@ -5,6 +5,11 @@
 | master | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master) |
 | develop | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop) |
 
+| Branch | codecov |
+| ------ | ------ |
+| master |  |
+| develop | [![codecov](https://codecov.io/gh/Mathavana/asp_net_core_api/branch/develop/graph/badge.svg)](https://codecov.io/gh/Mathavana/asp_net_core_api) |
+
 We will try to create an API application using asp.net core.
 - Mainly using repository pattern, generics, LINQ, Entity framework core
 - Main business logic implemented in InMemeory Database (plan to use MSSQL DB)
