@@ -29,13 +29,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install
-          command: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2
-      - run:
-          name: AddPath
-          command: export PATH="$PATH:/root/.dotnet/tools"
-
-      - run:
           name: Restore
           command: dotnet restore ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
       - run:
