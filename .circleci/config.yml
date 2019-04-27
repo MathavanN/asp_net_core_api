@@ -39,7 +39,7 @@ jobs:
           command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
       - run:
           name: GenerateReport
-          command: dotnet reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML;HTMLSummary
+          command: dotnet reportgenerator ./Supermarket.UnitTests/Supermarket.UnitTests.csproj "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML;HTMLSummary
       - run:
-          name: GenerateReport
+          name: SendToCodecov
           command: codecov -f ".\Supermarket.UnitTests\CoverageReports\Coverage\coverage.cobertura.xml"  -t $CODECOV_TOKEN
