@@ -24,6 +24,8 @@ We will try to create an API application using asp.net core.
 - CircleCi
 - Standard response for error (400,404, 500) results (Similar to ApiController model validation result)
 - Global Error Handling
+- Updated CircleCi for code coverage report
+- Local Codecoverage report gneration bat file added inside unit test project
 
 ### Next ToDo List:
 - Role Based Authentication/Authorization
