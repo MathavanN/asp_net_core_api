@@ -46,7 +46,7 @@ jobs:
           command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
       - run:
           name: GenerateReport
-          command: reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML;HTMLSummary
+          command: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2 && reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML;HTMLSummary
       - run:
           name: SendToCodecov
           command: codecov -f ".\Supermarket.UnitTests\CoverageReports\Coverage\coverage.cobertura.xml"  -t $CODECOV_TOKEN
