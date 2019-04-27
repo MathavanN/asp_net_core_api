@@ -29,23 +29,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install
-          command: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2
-      - run:
-          name: AddPath
-          command: export PATH="$PATH:/root/.dotnet/tools"
-      - run:
-          name: Restore
-          command: dotnet restore ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
-      - run:
-          name: Build
-          command: dotnet build ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
-      - run:
           name: Test
           command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports\Coverage\ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
       - run:
           name: GenerateReport
-          command: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.1.2 && reportgenerator "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML
+          command: dotnet tool install dotnet-reportgenerator-globaltool --version 4.1.2 && dotnet reportgenerator ~/.nuget/packages/reportgenerator/4.1.2/tools/ReportGenerator.dll "-reports:CoverageReports\Coverage\coverage.cobertura.xml" "-targetdir:CoverageReports\Coverage" -reporttypes:HTML
       - run:
           name: SendToCodecov
           command: codecov -f ".\Supermarket.UnitTests\CoverageReports\Coverage\coverage.cobertura.xml"  -t $CODECOV_TOKEN
