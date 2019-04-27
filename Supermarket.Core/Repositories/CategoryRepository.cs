@@ -32,7 +32,7 @@ namespace Supermarket.Core.Repositories
             return await FindByConditionAsync(expression);
         }
 
-        public async Task<Category> FindById(int id)
+        public async Task<Category> FindByIdAsync(int id)
         {
             var category = await FindByConditionAsync(c => c.Id == id);
             return category.FirstOrDefault();

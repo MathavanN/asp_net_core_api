@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Supermarket.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Supermarket.Core.Context
 {
@@ -14,5 +11,6 @@ namespace Supermarket.Core.Context
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Country> Countries { get; set; }
     }
 }

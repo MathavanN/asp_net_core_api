@@ -28,6 +28,7 @@ namespace Supermarket.V1.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetAllAsync()
         {
             var categories = await _repositoryWrapper.Category.ListAllCategoriesAsync();
@@ -43,7 +44,7 @@ namespace Supermarket.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> GetCategoryById(int id)
         {
-            var dbCategory = await _repositoryWrapper.Category.FindById(id);
+            var dbCategory = await _repositoryWrapper.Category.FindByIdAsync(id);
             if (dbCategory == null)
                 return NotFound(new NotFoundResponse("Category not found"));
 
@@ -71,7 +72,7 @@ namespace Supermarket.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCategoryDto saveCategoryDto)
         {
-            var dbCategory = await _repositoryWrapper.Category.FindById(id);
+            var dbCategory = await _repositoryWrapper.Category.FindByIdAsync(id);
             if (dbCategory == null)
                 return NotFound(new NotFoundResponse("Category not found"));
 
@@ -89,7 +90,7 @@ namespace Supermarket.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var dbCategory = await _repositoryWrapper.Category.FindById(id);
+            var dbCategory = await _repositoryWrapper.Category.FindByIdAsync(id);
             if (dbCategory == null)
                 return NotFound(new NotFoundResponse("Category not found"));
 

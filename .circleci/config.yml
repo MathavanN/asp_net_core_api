@@ -1,14 +1,17 @@
+version: 2.1
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
       - test
-version: 2
+
 jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    parallelism: 4
     steps:
       - checkout
       - run:
@@ -26,8 +29,15 @@ jobs:
   test:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+    parallelism: 4
     steps:
       - checkout
       - run:
           name: Test
-          command: dotnet test ./Supermarket.UnitTests/Supermarket.UnitTests.csproj
+          command: dotnet test --logger "trx;LogFileName=TestResults.trx" --logger "xunit;LogFileName=TestResults.xml" --results-directory ./CoverageReports/UnitTests /p:CollectCoverage=true /p:CoverletOutput=CoverageReports/Coverage/ /p:CoverletOutputFormat=cobertura /p:Exclude="[xunit.*]*"
+      - run:
+          name: SendToCodecov
+          command: |
+            curl -s https://codecov.io/bash > codecov 
+            chmod +x codecov 
+            ./codecov -f "./Supermarket.UnitTests/CoverageReports/Coverage/coverage.cobertura.xml" -t $CODECOV_TOKEN

@@ -5,6 +5,11 @@
 | master | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master) |
 | develop | [![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/develop) |
 
+| Branch | codecov |
+| ------ | ------ |
+| master |  |
+| develop | [![codecov](https://codecov.io/gh/Mathavana/asp_net_core_api/branch/develop/graph/badge.svg)](https://codecov.io/gh/Mathavana/asp_net_core_api) |
+
 We will try to create an API application using asp.net core.
 - Mainly using repository pattern, generics, LINQ, Entity framework core
 - Main business logic implemented in InMemeory Database (plan to use MSSQL DB)
@@ -19,6 +24,8 @@ We will try to create an API application using asp.net core.
 - CircleCi
 - Standard response for error (400,404, 500) results (Similar to ApiController model validation result)
 - Global Error Handling
+- Updated CircleCi for code coverage report
+- Local Codecoverage report gneration bat file added inside unit test project
 
 ### Next ToDo List:
 - Role Based Authentication/Authorization
@@ -36,6 +43,8 @@ We will try to create an API application using asp.net core.
 - See [chsakell](https://chsakell.com)
 - See [code-maze](https://code-maze.com)
 - See [CodAffection](https://www.youtube.com/channel/UCvzlnZbePin9kH-1JCKBt8Q)
+
+[![](https://codescene.io/projects/4502/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/4502/jobs/latest-successful/results)
 
 License
 ----
