@@ -14,13 +14,14 @@ We will try to create an API application using asp.net core.
 - Models, Enums, Context, Repositories moved to Supermarket.Core project
 - xUnit Test Project added
 - CircleCi
-- Standard response for error (400,404, 500) results (Similar to ApiController model validation result)
+- Standard response for error (400, 403, 404, 500) results (Similar to ApiController model validation result)
 - Global Error Handling
 - Updated CircleCi for code coverage report
 - Local Codecoverage report generation bat file added inside unit test project
+- ~~Role Based Authentication/Authorization~~ Policy Based Authorization
 
 ### Next ToDo List:
-- Role Based Authentication/Authorization
+
 - Dockerization
 - More test cases needed
 - Proper model implementation
@@ -35,6 +36,7 @@ We will try to create an API application using asp.net core.
 - See [chsakell](https://chsakell.com)
 - See [code-maze](https://code-maze.com)
 - See [CodAffection](https://www.youtube.com/channel/UCvzlnZbePin9kH-1JCKBt8Q)
+- See [MSDN](https://msdn.microsoft.com/en-us/magazine/mt826337.aspx)
 
 [![](https://codescene.io/projects/4502/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/4502/jobs/latest-successful/results)
 
