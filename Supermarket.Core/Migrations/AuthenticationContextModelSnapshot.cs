@@ -15,7 +15,7 @@ namespace Supermarket.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -41,6 +41,22 @@ namespace Supermarket.Core.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "e7d8555d-c501-448b-86c7-990d144bfc5c",
+                            ConcurrencyStamp = "c1037365-dcdf-402b-9489-e71b6f5f2ddd",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "37396955-b2e0-427c-bb7e-3ea4f14af6ff",
+                            ConcurrencyStamp = "b9ae6a71-8a61-4a89-8e74-028b0185908d",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
