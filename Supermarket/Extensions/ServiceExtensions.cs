@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Supermarket.AccessPolicy;
 using Supermarket.Core.Context;
 using Supermarket.Core.Models;
 using Supermarket.Core.Repositories;
@@ -98,7 +100,9 @@ namespace Supermarket.Extensions
 
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddDefaultIdentity<ApplicationUser>().AddEntityFrameworkStores<AuthenticationContext>();
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AuthenticationContext>();
         }
 
         public static void ConfigurePasswordPolicy(this IServiceCollection services)
@@ -134,6 +138,20 @@ namespace Supermarket.Extensions
                     ClockSkew = TimeSpan.Zero
                 };
             });
+        }
+
+        public static void ConfigureAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(nameof(Policy.Admin), policy => policy.Requirements.Add(new AccessRequirement(nameof(Policy.Admin))));
+                options.AddPolicy(nameof(Policy.Customer), policy => policy.Requirements.Add(new AccessRequirement(nameof(Policy.Customer))));
+            });
+        }
+
+        public static void ConfigureAuthorizationHandler(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationHandler, AccessHandler>();
         }
 
         public static void ConfigureApiVersioning(this IServiceCollection services)
