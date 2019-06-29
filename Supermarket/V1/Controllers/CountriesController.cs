@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +6,8 @@ using Supermarket.ApiResponse;
 using Supermarket.Core.Models;
 using Supermarket.Core.Repositories.Contracts;
 using Supermarket.V1.Dtos.CountryDtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Supermarket.V1.Controllers
 {
@@ -41,8 +39,7 @@ namespace Supermarket.V1.Controllers
 
         [HttpGet("{id}", Name = "CountryById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCountryById(int id)
         {
             var dbCountry = await _repositoryWrapper.Country.FindByIdAsync(id);
@@ -56,7 +53,6 @@ namespace Supermarket.V1.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesDefaultResponseType]
         public async Task<IActionResult> PostAsync([FromBody] CreateCountryDto createCountryDto)
         {
             var country = _mapper.Map<CreateCountryDto, Country>(createCountryDto);
@@ -70,8 +66,7 @@ namespace Supermarket.V1.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCountryDto saveCountryDto)
         {
             var dbCountry = await _repositoryWrapper.Country.FindByIdAsync(id);
@@ -88,8 +83,7 @@ namespace Supermarket.V1.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(NotFoundResponse), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var dbCountry = await _repositoryWrapper.Country.FindByIdAsync(id);
