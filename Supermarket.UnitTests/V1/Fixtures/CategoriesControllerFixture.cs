@@ -13,16 +13,16 @@ namespace Supermarket.UnitTests.V1.Fixtures
     {
         public IEnumerable<Category> Categories { get; private set; }
 
-        public CreateCategoryDto CreateCategoryDto { get; private set; }
+        public CreateCategoryDto CreateCategoryDto { get; set; }
 
-        public CreateCategoryDto BadCreateCategoryDto { get; private set; }
+        public SaveCategoryDto SaveCategoryDto { get; set; }
 
-        public Mock<IRepositoryWrapper> MockRepositoryWarapper { get; private set; }
+        public Mock<IRepositoryWrapper> MockRepositoryWrapper { get; private set; }
 
         public IMapper MockMapper { get; private set; }
         public CategoriesControllerFixture()
         {
-            MockRepositoryWarapper = new Mock<IRepositoryWrapper>();
+            MockRepositoryWrapper = new Mock<IRepositoryWrapper>();
 
             //auto mapper configuration
             var configuration = new MapperConfiguration(cfg =>
@@ -44,18 +44,19 @@ namespace Supermarket.UnitTests.V1.Fixtures
                 Name = "Avocado"
             };
 
-            BadCreateCategoryDto = new CreateCategoryDto
+            SaveCategoryDto = new SaveCategoryDto
             {
-                Name = ""
+                Name = "Blueberries"
             };
         }
 
         public void Dispose()
         {
             Categories = null;
-            MockRepositoryWarapper = null;
+            MockRepositoryWrapper = null;
             MockMapper = null;
-            BadCreateCategoryDto = null;
+            SaveCategoryDto = null;
+            CreateCategoryDto = null;
         }
     }
 }

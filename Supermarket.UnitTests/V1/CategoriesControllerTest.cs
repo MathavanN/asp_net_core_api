@@ -27,9 +27,9 @@ namespace Supermarket.UnitTests.V1
         public async void Task_GetAllAsync_ReturnsOkObjectResult()
         {
             //Arrange
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.ListAllCategoriesAsync()).ReturnsAsync(_fixture.Categories);
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.ListAllCategoriesAsync()).ReturnsAsync(_fixture.Categories);
 
-            var categoriesController = new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
 
             //Act
             var result = await categoriesController.GetAllAsync();
@@ -42,9 +42,9 @@ namespace Supermarket.UnitTests.V1
         public async void Task_GetAllAsync_ReturnsAll()
         {
             //Arrange
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.ListAllCategoriesAsync()).ReturnsAsync(_fixture.Categories);
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.ListAllCategoriesAsync()).ReturnsAsync(_fixture.Categories);
 
-            var categoriesController = new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
 
             //Act
             var result = await categoriesController.GetAllAsync();
@@ -64,10 +64,10 @@ namespace Supermarket.UnitTests.V1
         {
             //Arrange
             var categoryId = 1;
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
 
             var categoriesController =
-                new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+                new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
 
             //Act
             var result = await categoriesController.GetCategoryById(categoryId);
@@ -81,9 +81,9 @@ namespace Supermarket.UnitTests.V1
         {
             //Arrange
             var categoryId = 1;
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
 
-            var categoriesController = new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
             categoryId = 5;
             //Act
             var result = await categoriesController.GetCategoryById(categoryId);
@@ -97,9 +97,9 @@ namespace Supermarket.UnitTests.V1
         {
             //Arrange
             var categoryId = 2;
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[1]);
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[1]);
 
-            var categoriesController = new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
 
             //Act
             var result = await categoriesController.GetCategoryById(categoryId);
@@ -115,9 +115,9 @@ namespace Supermarket.UnitTests.V1
         public async void Task_PostAsync_ReturnsCreatedAtRouteResult()
         {
             //Arrange
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.AddCategoryAsync(_fixture.MockMapper.Map<CreateCategoryDto, Category>(_fixture.CreateCategoryDto)));
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.AddCategoryAsync(_fixture.MockMapper.Map<CreateCategoryDto, Category>(_fixture.CreateCategoryDto)));
 
-            var categoriesController = new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
 
             //Act
             var result = await categoriesController.PostAsync(_fixture.CreateCategoryDto);
@@ -127,16 +127,15 @@ namespace Supermarket.UnitTests.V1
         }
 
         [Fact]
-        public void Task_PostAsync_ReturnsBadRequestResult()
+        public void Task_PostAsync_ReturnsBadRequestResult_FieldRequired()
         {
             //Arrange
-            var validationContext = new ValidationContext(_fixture.BadCreateCategoryDto, null, null);
+            _fixture.CreateCategoryDto.Name = "";
+            var validationContext = new ValidationContext(_fixture.CreateCategoryDto, null, null);
             var validationResults = new List<ValidationResult>();
-            Validator.TryValidateObject(_fixture.BadCreateCategoryDto, validationContext, validationResults);
+            Validator.TryValidateObject(_fixture.CreateCategoryDto, validationContext, validationResults);
 
-            _fixture.MockRepositoryWarapper.Setup(x => x.Category.AddCategoryAsync(_fixture.MockMapper.Map<CreateCategoryDto, Category>(_fixture.BadCreateCategoryDto)));
-
-            var categoriesController = new CategoriesController(_fixture.MockRepositoryWarapper.Object, _fixture.MockMapper);
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
 
             //Act
             foreach (var validationResult in validationResults)
@@ -149,6 +148,144 @@ namespace Supermarket.UnitTests.V1
             Assert.Equal(1, categoriesController.ModelState.ErrorCount);
             Assert.True(categoriesController.ModelState.ContainsKey("Name"));
             Assert.Equal("The Name field is required.", categoriesController.ModelState.First().Value.Errors[0].ErrorMessage, true);
+        }
+
+        [Fact]
+        public void Task_PostAsync_ReturnsBadRequestResult_FieldLength()
+        {
+            //Arrange
+            _fixture.CreateCategoryDto.Name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            var validationContext = new ValidationContext(_fixture.CreateCategoryDto, null, null);
+            var validationResults = new List<ValidationResult>();
+            Validator.TryValidateObject(_fixture.CreateCategoryDto, validationContext, validationResults, true);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+
+            //Act
+            foreach (var validationResult in validationResults)
+            {
+                categoriesController.ModelState.AddModelError(validationResult.MemberNames.First(), validationResult.ErrorMessage);
+            }
+
+            // Assert
+            Assert.False(categoriesController.ModelState.IsValid);
+            Assert.Equal(1, categoriesController.ModelState.ErrorCount);
+            Assert.True(categoriesController.ModelState.ContainsKey("Name"));
+            categoriesController.ModelState.First().Value.Errors[0].ErrorMessage.Contains("maximum length of '30'").Should().BeTrue();
+        }
+
+        [Fact]
+        public async void Task_PutAsync_ReturnsNoContentResult()
+        {
+            //Arrange
+            var categoryId = 1;
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+
+            //Act
+            var result = await categoriesController.PutAsync(categoryId, _fixture.SaveCategoryDto);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async void Task_PutAsync_ReturnsNotFoundResult()
+        {
+            //Arrange
+            var categoryId = 1;
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+            categoryId = 5;
+
+            //Act
+            var result = await categoriesController.PutAsync(categoryId, _fixture.SaveCategoryDto);
+
+            // Assert
+            Assert.IsType<NotFoundObjectResult>(result);
+        }
+
+        [Fact]
+        public void Task_PutAsync_ReturnsBadRequestResult_FieldRequired()
+        {
+            //Arrange
+            _fixture.SaveCategoryDto.Name = "";
+            var validationContext = new ValidationContext(_fixture.SaveCategoryDto, null, null);
+            var validationResults = new List<ValidationResult>();
+            Validator.TryValidateObject(_fixture.SaveCategoryDto, validationContext, validationResults);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+
+            //Act
+            foreach (var validationResult in validationResults)
+            {
+                categoriesController.ModelState.AddModelError(validationResult.MemberNames.First(), validationResult.ErrorMessage);
+            }
+
+            // Assert
+            Assert.False(categoriesController.ModelState.IsValid);
+            Assert.Equal(1, categoriesController.ModelState.ErrorCount);
+            Assert.True(categoriesController.ModelState.ContainsKey("Name"));
+            Assert.Equal("The Name field is required.", categoriesController.ModelState.First().Value.Errors[0].ErrorMessage, true);
+        }
+
+        [Fact]
+        public void Task_PutAsync_ReturnsBadRequestResult_FieldLength()
+        {
+            //Arrange
+            _fixture.SaveCategoryDto.Name = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            var validationContext = new ValidationContext(_fixture.SaveCategoryDto, null, null);
+            var validationResults = new List<ValidationResult>();
+            Validator.TryValidateObject(_fixture.SaveCategoryDto, validationContext, validationResults, true);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+
+            //Act
+            foreach (var validationResult in validationResults)
+            {
+                categoriesController.ModelState.AddModelError(validationResult.MemberNames.First(), validationResult.ErrorMessage);
+            }
+
+            // Assert
+            Assert.False(categoriesController.ModelState.IsValid);
+            Assert.Equal(1, categoriesController.ModelState.ErrorCount);
+            Assert.True(categoriesController.ModelState.ContainsKey("Name"));
+            categoriesController.ModelState.First().Value.Errors[0].ErrorMessage.Contains("maximum length of '30'").Should().BeTrue();
+        }
+
+        [Fact]
+        public async void Task_DeleteAsync_ReturnsNoContentResult()
+        {
+            //Arrange
+            var categoryId = 1;
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+
+            //Act
+            var result = await categoriesController.DeleteAsync(categoryId);
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async void Task_DeleteAsync_ReturnsNotFoundResult()
+        {
+            //Arrange
+            var categoryId = 1;
+            _fixture.MockRepositoryWrapper.Setup(x => x.Category.FindByIdAsync(categoryId)).ReturnsAsync(_fixture.Categories.ToList()[0]);
+
+            var categoriesController = new CategoriesController(_fixture.MockRepositoryWrapper.Object, _fixture.MockMapper);
+            categoryId = 5;
+
+            //Act
+            var result = await categoriesController.DeleteAsync(categoryId);
+
+            // Assert
+            Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }
