@@ -43,6 +43,10 @@ namespace Supermarket
 
             services.ConfigureAuthentication(Configuration);
 
+            services.ConfigureAuthorization();
+
+            services.ConfigureAuthorizationHandler();
+
             services.ConfigureRepositoryWrapper();
 
             services.AddMvcCore().AddJsonOptions(options =>
