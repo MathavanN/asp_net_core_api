@@ -24,15 +24,12 @@ namespace Supermarket.V1.Controller
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationSettings _appSettings;
         private readonly IMapper _mapper;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            IOptions<ApplicationSettings> appSettings, IMapper mapper)
+        public AccountController(UserManager<ApplicationUser> userManager, IOptions<ApplicationSettings> appSettings, IMapper mapper)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _appSettings = appSettings.Value;
             _mapper = mapper;
         }
@@ -43,6 +40,9 @@ namespace Supermarket.V1.Controller
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
         {
+            //TODO: Role need to pass by RegisterDto
+            //var role = "Admin";
+            var role = "Customer";
             var user = new ApplicationUser()
             {
                 UserName = registerDto.Email,
@@ -51,6 +51,9 @@ namespace Supermarket.V1.Controller
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+            if (result.Succeeded)
+                await _userManager.AddToRoleAsync(user, role);
 
             return Ok(result);
         }
@@ -70,19 +73,22 @@ namespace Supermarket.V1.Controller
 
             var result = await _userManager.CheckPasswordAsync(userDb, loginDto.Password);
 
-            if(!result)
+            if (!result)
                 return BadRequest(new BadRequestResponse("Username or password is incorrect"));
+
+            var role = await _userManager.GetRolesAsync(userDb);
+            var _identityOptions = new IdentityOptions();
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("UserId", userDb.Id.ToString())
+                        new Claim(_identityOptions.ClaimsIdentity.UserIdClaimType, userDb.Id.ToString()),
+                        new Claim(_identityOptions.ClaimsIdentity.UserNameClaimType, userDb.FullName.ToString()),
+                        new Claim(_identityOptions.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
                     }),
                 Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
-                        SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
@@ -104,5 +110,7 @@ namespace Supermarket.V1.Controller
 
             return Ok(userInfoDto);
         }
+
+        
     }
 }
