@@ -155,6 +155,16 @@ namespace Supermarket.Core.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "e7d8555d-c501-448b-86c7-990d144bfc5c", "c1037365-dcdf-402b-9489-e71b6f5f2ddd", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "37396955-b2e0-427c-bb7e-3ea4f14af6ff", "b9ae6a71-8a61-4a89-8e74-028b0185908d", "Customer", "CUSTOMER" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
