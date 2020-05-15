@@ -13,12 +13,13 @@ We will try to create an API application using asp.net core.
 - Model.IsValid is removed in each controller. (ApiController auto implement Model.IsValid)
 - Models, Enums, Context, Repositories moved to Supermarket.Core project
 - xUnit Test Project added
-- CircleCi
+- ~~CircleCi~~
 - Standard response for error (400, 403, 404, 500) results (Similar to ApiController model validation result)
 - Global Error Handling
 - Updated CircleCi for code coverage report
 - Local Codecoverage report generation bat file added inside unit test project
 - ~~Role Based Authentication/Authorization~~ Policy Based Authorization
+- Github Actions for CICD pipeline
 
 ### Next ToDo List:
 
