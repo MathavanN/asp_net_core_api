@@ -24,6 +24,6 @@ jobs:
     - name: Build Supermarket.Core
       run: dotnet build ./Supermarket.Core/Supermarket.Core.csproj 
     - name: Build Supermarket
-      run: dotnet restore ./Supermarket/Supermarket.csproj --configuration Release --no-restore
+      run: dotnet build ./Supermarket/Supermarket.csproj --configuration Release --no-restore
     - name: Test
       run: dotnet test .Supermarket.UnitTests/Supermarket.UnitTests.csproj --no-restore --verbosity normal
