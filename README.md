@@ -1,6 +1,6 @@
 # ASP.NET Core Web API development
 
-[![CircleCI](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master.svg?style=svg)](https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master) | [![codecov](https://codecov.io/gh/Mathavana/asp_net_core_api/branch/develop/graph/badge.svg)](https://codecov.io/gh/Mathavana/asp_net_core_api) |
+![.NET Core](https://github.com/MathavanN/asp_net_core_api/workflows/.NET%20Core/badge.svg)(https://circleci.com/gh/Mathavana/asp_net_core_api/tree/master) | [![codecov](https://codecov.io/gh/Mathavana/asp_net_core_api/branch/develop/graph/badge.svg)](https://codecov.io/gh/Mathavana/asp_net_core_api) |
 
 We will try to create an API application using asp.net core.
 - Mainly using repository pattern, generics, LINQ, Entity framework core
